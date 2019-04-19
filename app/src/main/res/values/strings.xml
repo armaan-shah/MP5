@@ -3,6 +3,7 @@
     <string name="food_search">Food Search</string>
     <string name="diet_preference">Diet Preference:</string>
     <string name="number">Number</string>
+    <string name="cuisine">Cuisine:</string>
     <string-array name="diet_array">
         <item>None</item>
         <item>Vegetarian</item>

@@ -11,10 +11,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Spinner spinner = findViewById(R.id.dietSpinner);
+        Spinner dietSpinner = findViewById(R.id.dietSpinner);
+        Spinner cuisineSpinner = findViewById(R.id.cuisineSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.diet_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        dietSpinner.setAdapter(adapter);
+        adapter = ArrayAdapter.createFromResource(this,
+                R.array.cuisine_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        cuisineSpinner.setAdapter(adapter);
     }
 }
