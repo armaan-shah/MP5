@@ -20,11 +20,6 @@ public class MainActivity extends AppCompatActivity {
     public void sendMessage(View view) {
         Intent URL = new Intent(android.content.Intent.ACTION_VIEW);
         URL.setData(Uri.parse("http://www.google.com/"));
-        /*
-        EditText userInput = (EditText) findViewById(R.id.inputBox);
-        String message = userInput.getText().toString();
-        URL.putExtra(EXTRA_MESSAGE, message);
-        */
         startActivity(URL);
     }
 }
