@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MP5</string>
+    <string name="what_ingredients_do_you_want_to_use">What ingredients do you want to use?</string>
+    <string name="i_m_done">I\'m done</string>
 </resources>
