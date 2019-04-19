@@ -1,3 +1,41 @@
 <resources>
     <string name="app_name">MP5</string>
+    <string name="food_search">Food Search</string>
+    <string name="diet_preference">Diet Preference:</string>
+    <string name="number">Number</string>
+    <string-array name="diet_array">
+        <item>None</item>
+        <item>Vegetarian</item>
+        <item>Vegan</item>
+        <item>Pescetarian</item>
+        <item>Lacto Vegetarian</item>
+        <item>Ovo Vegetarian</item>
+    </string-array>
+    <string-array name="cuisine_array">
+        <item>None/Any</item>
+        <item>African</item>
+        <item>Chinese</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Vietnamese</item>
+        <item>Thai</item>
+        <item>Indian</item>
+        <item>British</item>
+        <item>Irish</item>
+        <item>French</item>
+        <item>Italian</item>
+        <item>Mexican</item>
+        <item>Spanish</item>
+        <item>Middle Eastern</item>
+        <item>Jewish</item>
+        <item>American</item>
+        <item>Cajun</item>
+        <item>Southern</item>
+        <item>Greek</item>
+        <item>German</item>
+        <item>Nordic</item>
+        <item>Eastern European</item>
+        <item>Caribbean</item>
+        <item>Latin American</item>
+    </string-array>
 </resources>
