@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -37,14 +38,26 @@
             android:layout_height="80dp">
 
             <android.support.design.widget.TextInputEditText
+                android:id="@+id/numberInput"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:hint="@string/number" />
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/excludeIngredientsInput"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:hint="@string/exclude_ingredients" />
+        </android.support.design.widget.TextInputLayout>
+
         <TextView
             android:id="@+id/textView"
-            android:layout_width="112dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/diet_preference" />
 
@@ -67,5 +80,17 @@
             android:layout_weight="1" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/doneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="sendMessage"
+        android:text="@string/done"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </android.support.constraint.ConstraintLayout>

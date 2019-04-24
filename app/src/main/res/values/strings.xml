@@ -4,6 +4,9 @@
     <string name="diet_preference">Diet Preference:</string>
     <string name="number">Number</string>
     <string name="cuisine">Cuisine:</string>
+    <string name="done">DONE</string>
+    <string name="include_ingredients">Include Ingredients:</string>
+    <string name="exclude_ingredients">Exclude Ingredients:</string>
     <string-array name="diet_array">
         <item>None</item>
         <item>Vegetarian</item>
