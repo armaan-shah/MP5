@@ -4,6 +4,8 @@
     <string name="diet_preference">Diet Preference:</string>
     <string name="number">Number</string>
     <string name="cuisine">Cuisine:</string>
+    <string name="submit">Submit</string>
+    <string name="type">Type:</string>
     <string-array name="diet_array">
         <item>None</item>
         <item>Vegetarian</item>
@@ -38,5 +40,19 @@
         <item>Eastern European</item>
         <item>Caribbean</item>
         <item>Latin American</item>
+    </string-array>
+    <string-array name="type_array">
+        <item>None/Any</item>
+        <item>Main Course</item>
+        <item>Side Dish</item>
+        <item>Dessert</item>
+        <item>Appetizer</item>
+        <item>Salad</item>
+        <item>Bread</item>
+        <item>Breakfast</item>
+        <item>Soup</item>
+        <item>Beverage</item>
+        <item>Sauce</item>
+        <item>Drink</item>
     </string-array>
 </resources>
