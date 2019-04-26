@@ -4,18 +4,21 @@
     <string name="diet_preference">Diet Preference:</string>
     <string name="number">Number</string>
     <string name="cuisine">Cuisine:</string>
-    <string name="submit">Submit</string>
+    <string name="done">DONE</string>
+    <string name="include_ingredients">Include Ingredients:</string>
+    <string name="exclude_ingredients">Exclude Ingredients:</string>
+    <string name="intolerances">Intolerances:</string>
     <string name="type">Type:</string>
     <string-array name="diet_array">
         <item>None</item>
         <item>Vegetarian</item>
         <item>Vegan</item>
         <item>Pescetarian</item>
-        <item>Lacto Vegetarian</item>
+        <item>LactoVegetarian</item>
         <item>Ovo Vegetarian</item>
     </string-array>
     <string-array name="cuisine_array">
-        <item>None/Any</item>
+        <item>Any</item>
         <item>African</item>
         <item>Chinese</item>
         <item>Japanese</item>
@@ -41,8 +44,22 @@
         <item>Caribbean</item>
         <item>Latin American</item>
     </string-array>
+    <string-array name="intolerances_array">
+        <item>None</item>
+        <item>Dairy</item>
+        <item>Egg</item>
+        <item>Gluten</item>
+        <item>Peanut</item>
+        <item>Sesame</item>
+        <item>Seafood</item>
+        <item>Shellfish</item>
+        <item>Soy</item>
+        <item>Sulfite</item>
+        <item>Tree Nut</item>
+        <item>Wheat</item>
+    </string-array>
     <string-array name="type_array">
-        <item>None/Any</item>
+        <item>Any</item>
         <item>Main Course</item>
         <item>Side Dish</item>
         <item>Dessert</item>
