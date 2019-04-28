@@ -33,16 +33,15 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <EditText
+            android:id="@+id/numberInput"
             android:layout_width="match_parent"
-            android:layout_height="80dp">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/numberInput"
-                android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:hint="@string/number" />
-        </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/number"
+            android:inputType="number"
+            tools:targetApi="o" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -108,7 +107,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:onClick="sendMessage"
         android:text="@string/done"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -120,9 +118,25 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/doneButton" />
+
+    <TextView
+        android:id="@+id/jsonResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
 </android.support.constraint.ConstraintLayout>
