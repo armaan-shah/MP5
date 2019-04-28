@@ -10,7 +10,7 @@
     <string name="intolerances">Intolerances:</string>
     <string name="type">Type:</string>
     <string-array name="diet_array">
-        <item>None</item>
+        <item>Any</item>
         <item>Vegetarian</item>
         <item>Vegan</item>
         <item>Pescetarian</item>
@@ -45,7 +45,7 @@
         <item>Latin American</item>
     </string-array>
     <string-array name="intolerances_array">
-        <item>None</item>
+        <item>Any</item>
         <item>Dairy</item>
         <item>Egg</item>
         <item>Gluten</item>

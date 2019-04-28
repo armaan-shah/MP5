@@ -1,45 +1,121 @@
 package com.example.mp5;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Tasks {
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+
+class Tasks {
 
     private static final String TAG = "MP5:Tasks";
-    static class ProcessImageTask extends AsyncTask<View, Void, Integer> {
+    static class ProcessTextTask extends AsyncTask<View, Void, Integer> {
         private static final String SUBSCRIPTION_KEY = BuildConfig.API_KEY;
-        private static final String API_URL = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com";
-        private static final String FEATURES = "Results";
+        private static final String API_URL = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?";
         private WeakReference<MainActivity> activityReference;
         private RequestQueue requestQueue;
 
-        ProcessImageTask(final MainActivity context, final RequestQueue setRequestQueue) {
+        ProcessTextTask(final MainActivity context, final RequestQueue setRequestQueue) {
             activityReference = new WeakReference<>(context);
             requestQueue = setRequestQueue;
         }
 
-        @Override
-        protected void onPreExecute() {
+        protected Integer doInBackground(View... currentView) {
+            Log.d(TAG, "started doinbackground");
+            MainActivity activity = activityReference.get();
+            Uri.Builder toRequestURL = Uri.parse(API_URL).buildUpon();
+            String cuisine = activity.getCuisine();
+            if (cuisine != null) {
+                toRequestURL.appendQueryParameter("cuisine", cuisine);
+            }
+            String diet = activity.getDiet();
+            if (diet != null) {
+                toRequestURL.appendQueryParameter("diet", diet);
+            }
+            String exclude = activity.getExclude();
+            if (exclude != null) {
+                toRequestURL.appendQueryParameter("excludeIngredients", exclude);
+            }
+            String intolerances = activity.getIntolerances();
+            if (intolerances != null) {
+                toRequestURL.appendQueryParameter("intolerances", intolerances);
+            }
+            String number = activity.getNumber();
+            if (number != null) {
+                toRequestURL.appendQueryParameter("number", number);
+            }
+            String type = activity.getType();
+            if (type != null) {
+                toRequestURL.appendQueryParameter("type", type);
+            }
+            String query = activity.getQuery();
+            if (query != null) {
+                toRequestURL.appendQueryParameter("query", query);
+            } else {
+                Log.e(TAG, "Query is required but is null.");
+                DialogFragment dialog = new AlertDialogFragment();
+                dialog.show(activity.getSupportFragmentManager(), "blankQuery");
+                handleApiResponse(null);
+                return 0;
+            }
+            Log.e(TAG, "aaaaaaaaaaaaaaaaaaaaaaa");
+            StringRequest toRequest = new StringRequest(
+                    Request.Method.GET, toRequestURL.toString(),
+                    this::handleApiResponse, this::handleApiError) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("X-RapidAPI-Host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com");
+                    headers.put("X-RapidAPI-Key", SUBSCRIPTION_KEY);
+                    Log.e(TAG, headers.get("X-RapidAPI-Host"));
+                    Log.e(TAG, headers.get("X-RapidAPI-Key"));
+                    return headers;
+                }
+            };
+            requestQueue.add(toRequest);
+            return 0;
+        }
+
+        void handleApiResponse(final String response) {
+            Log.d(TAG, "Response:" + response);
             MainActivity activity = activityReference.get();
             if (activity == null || activity.isFinishing()) {
                 return;
             }
+            /*
             ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
+            */
+            activity.finishProcessing(response);
         }
-        protected Integer doInBackground(View... currentView) {
-            String request = Uri.parse(API_URL)
-                    .buildUpon()
-                    .appendQueryParameter("visualFeatures", FEATURES)
-                    .build()
-                    .toString();
-            return 0;
+        void handleApiError(final VolleyError error) {
+            Log.w(TAG, "Error: " + error.toString());
+            ProgressBar progressBar = activityReference.get().findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+    public static class AlertDialogFragment extends DialogFragment {
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Food search cannot be blank.");
+            builder.setPositiveButton("OK", (dialog, which) -> {});
+            return builder.create();
         }
     }
 }
