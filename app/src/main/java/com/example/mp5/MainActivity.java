@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner cuisineSpinner;
     Spinner intolerancesSpinner;
     Spinner typeSpinner;
-    //ProgressBar progressBar;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         cuisineSpinner = findViewById(R.id.cuisineSpinner);
         intolerancesSpinner = findViewById(R.id.intolerancesSpinner);
         typeSpinner = findViewById(R.id.typeSpinner);
+        progressBar = findViewById(R.id.progressBar);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.cuisine_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -61,18 +62,12 @@ public class MainActivity extends AppCompatActivity {
                 R.array.type_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(adapter);
-        //progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
     protected void onClick() {
         Log.d(TAG, "Done button clicked.");
-        //progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         new Tasks.ProcessTextTask(MainActivity.this, requestQueue).execute();
-    }
-    public void sendMessage(View view) {
-        Intent URL = new Intent(android.content.Intent.ACTION_VIEW);
-        URL.setData(Uri.parse("http://www.google.com/"));
-        Log.d(TAG, "Accessed Google.");
-        startActivity(URL);
     }
     public String getCuisine() {
         String cuisine = cuisineSpinner.getSelectedItem().toString();
@@ -138,9 +133,9 @@ public class MainActivity extends AppCompatActivity {
             JsonElement jsonElement = jsonParser.parse(json);
             String prettyJsonString = gson.toJson(jsonElement);
             textView.setText(prettyJsonString);
-            //progressBar.setVisibility(View.GONE);
-        } catch (Exception e) {
-           // progressBar.setVisibility(View.GONE);
+        } catch (Exception ignored) {
+        } finally {
+            progressBar.setVisibility(View.GONE);
         }
     }
 }
