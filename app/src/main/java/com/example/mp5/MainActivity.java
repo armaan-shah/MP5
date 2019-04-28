@@ -1,8 +1,12 @@
 package com.example.mp5;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -127,15 +131,20 @@ public class MainActivity extends AppCompatActivity {
     }
     public void finishProcessing(final String json) {
         try {
-            TextView textView = findViewById(R.id.jsonResult);
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            JsonParser jsonParser = new JsonParser();
-            JsonElement jsonElement = jsonParser.parse(json);
-            String prettyJsonString = gson.toJson(jsonElement);
-            textView.setText(prettyJsonString);
-        } catch (Exception ignored) {
+           Gson gson = new Gson();
+        } catch(Exception ignored) {
         } finally {
-            progressBar.setVisibility(View.GONE);
+            runOnUiThread(() -> progressBar.setVisibility(View.GONE));
+        }
+    }
+    public static class AlertDialogFragment extends DialogFragment {
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Your search returned no results.");
+            builder.setPositiveButton("OK", (dialog, which) -> {});
+            return builder.create();
         }
     }
 }
