@@ -29,7 +29,7 @@ class ScrollingTasks {
         }
 
         protected Integer doInBackground(View... currentView) {
-            Log.e(TAG, "Called scrolling tasks.");
+            Log.d(TAG, "Called ScrollingTasks.");
             ScrollingActivity activity = activityReference.get();
             String toRequestURL = API_URL + activity.getId() + "/information";
             StringRequest toRequest = new StringRequest(
