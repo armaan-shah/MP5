@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import java.lang.ref.WeakReference;
@@ -86,7 +85,6 @@ class Tasks {
                     return headers;
                 }
             };
-            Log.e(TAG, toRequest.toString());
             requestQueue.add(toRequest);
             return 0;
         }
