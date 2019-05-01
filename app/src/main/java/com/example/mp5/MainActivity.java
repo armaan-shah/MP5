@@ -1,8 +1,11 @@
 package com.example.mp5;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
-import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,17 +14,21 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     Spinner intolerancesSpinner;
     Spinner typeSpinner;
     ProgressBar progressBar;
+    private static Map<String, Integer> toShow;
+    private static List<JsonObject> individualResults;
+    private static Map<String, Integer> ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         intolerancesSpinner = findViewById(R.id.intolerancesSpinner);
         typeSpinner = findViewById(R.id.typeSpinner);
         progressBar = findViewById(R.id.progressBar);
+        toShow = new LinkedHashMap<>();
+        ids = new LinkedHashMap<>();
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.cuisine_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -98,15 +110,15 @@ public class MainActivity extends AppCompatActivity {
         }
         return intolerances;
     }
-    public String getNumber() {
+    public String getNumber() throws IllegalArgumentException {
         EditText recipeNumber = findViewById(R.id.numberInput);
         String numberAsString = recipeNumber.getText().toString();
         if (numberAsString.length() == 0) {
             return null;
         }
         int number = Integer.parseInt(numberAsString);
-        if (number < 0 || number > 100) {
-            return null;
+        if (number <= 0 || number > 100) {
+            throw new IllegalArgumentException();
         }
         return Integer.toString(number);
     }
@@ -125,17 +137,51 @@ public class MainActivity extends AppCompatActivity {
         }
         return queryText.toString();
     }
+    public static Map<String, Integer> getToShow() {
+        return toShow;
+    }
+    public static List<JsonObject> getIndividualResults() {
+        return individualResults;
+    }
+    public static Map<String, Integer> getIds() { return ids; }
     public void finishProcessing(final String json) {
         try {
-            TextView textView = findViewById(R.id.jsonResult);
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             JsonParser jsonParser = new JsonParser();
-            JsonElement jsonElement = jsonParser.parse(json);
-            String prettyJsonString = gson.toJson(jsonElement);
-            textView.setText(prettyJsonString);
-        } catch (Exception ignored) {
+            JsonArray jsonResults = jsonParser.parse(json).getAsJsonObject().getAsJsonArray("results");
+            individualResults = new ArrayList<>();
+            for (int i = 0; i < jsonResults.size(); i++) {
+                individualResults.add(jsonResults.get(i).getAsJsonObject());
+            }
+            for (int i = 0; i < individualResults.size(); i++) {
+                toShow.put(individualResults.get(i).get("title").getAsString(), individualResults.get(i).get("readyInMinutes").getAsInt());
+            }
+            for (int i = 0; i < individualResults.size(); i++) {
+                toShow.put(individualResults.get(i).get("title").getAsString(), individualResults.get(i).get("readyInMinutes").getAsInt());
+            }
+            if (toShow.size() == 0) {
+                throw new Exception();
+            }
+            Log.d(TAG, "Successful call to API.");
+            Log.d(TAG, "toShow.size() == " + toShow.size());
+            Intent intent = new Intent(this, ScrollingActivity.class);
+            startActivity(intent);
+        } catch(Exception e) {
+            Log.e(TAG, "Json did not include recipes or inputs were invalid.");
+            DialogFragment dialog = new AlertDialogFragment();
+            dialog.show(getSupportFragmentManager(), "nullReturn");
         } finally {
-            progressBar.setVisibility(View.GONE);
+            runOnUiThread(() -> progressBar.setVisibility(View.GONE));
+        }
+    }
+    public static class AlertDialogFragment extends DialogFragment {
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Your search returned no results or contained invalid inputs. Please try again.");
+            builder.setPositiveButton("OK", (dialog, which) -> {});
+            return builder.create();
         }
     }
 }

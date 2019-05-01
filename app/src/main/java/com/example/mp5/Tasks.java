@@ -35,7 +35,6 @@ class Tasks {
         }
 
         protected Integer doInBackground(View... currentView) {
-            Log.d(TAG, "started doinbackground");
             MainActivity activity = activityReference.get();
             Uri.Builder toRequestURL = Uri.parse(API_URL).buildUpon();
             String cuisine = activity.getCuisine();
@@ -54,9 +53,13 @@ class Tasks {
             if (intolerances != null) {
                 toRequestURL.appendQueryParameter("intolerances", intolerances);
             }
-            String number = activity.getNumber();
-            if (number != null) {
-                toRequestURL.appendQueryParameter("number", number);
+            try {
+                String number = activity.getNumber();
+                if (number != null) {
+                    toRequestURL.appendQueryParameter("number", number);
+                }
+            } catch (IllegalArgumentException e) {
+                activity.finishProcessing(null);
             }
             String type = activity.getType();
             if (type != null) {
@@ -69,10 +72,9 @@ class Tasks {
                 Log.e(TAG, "Query is required but is null.");
                 DialogFragment dialog = new AlertDialogFragment();
                 dialog.show(activity.getSupportFragmentManager(), "blankQuery");
-                handleApiResponse(null);
+                activity.finishProcessing(null);
                 return 0;
             }
-            Log.e(TAG, "aaaaaaaaaaaaaaaaaaaaaaa");
             StringRequest toRequest = new StringRequest(
                     Request.Method.GET, toRequestURL.toString(),
                     this::handleApiResponse, this::handleApiError) {
@@ -81,11 +83,10 @@ class Tasks {
                     Map<String, String> headers = new HashMap<>();
                     headers.put("X-RapidAPI-Host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com");
                     headers.put("X-RapidAPI-Key", SUBSCRIPTION_KEY);
-                    Log.e(TAG, headers.get("X-RapidAPI-Host"));
-                    Log.e(TAG, headers.get("X-RapidAPI-Key"));
                     return headers;
                 }
             };
+            Log.e(TAG, toRequest.toString());
             requestQueue.add(toRequest);
             return 0;
         }
@@ -96,16 +97,11 @@ class Tasks {
             if (activity == null || activity.isFinishing()) {
                 return;
             }
-            /*
-            ProgressBar progressBar = activity.findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.INVISIBLE);
-            */
             activity.finishProcessing(response);
         }
         void handleApiError(final VolleyError error) {
             Log.w(TAG, "Error: " + error.toString());
-            ProgressBar progressBar = activityReference.get().findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.INVISIBLE);
+            activityReference.get().finishProcessing(null);
         }
     }
     public static class AlertDialogFragment extends DialogFragment {
