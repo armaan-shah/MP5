@@ -53,9 +53,13 @@ class Tasks {
             if (intolerances != null) {
                 toRequestURL.appendQueryParameter("intolerances", intolerances);
             }
-            String number = activity.getNumber();
-            if (number != null) {
-                toRequestURL.appendQueryParameter("number", number);
+            try {
+                String number = activity.getNumber();
+                if (number != null) {
+                    toRequestURL.appendQueryParameter("number", number);
+                }
+            } catch (IllegalArgumentException e) {
+                activity.finishProcessing(null);
             }
             String type = activity.getType();
             if (type != null) {
@@ -68,7 +72,7 @@ class Tasks {
                 Log.e(TAG, "Query is required but is null.");
                 DialogFragment dialog = new AlertDialogFragment();
                 dialog.show(activity.getSupportFragmentManager(), "blankQuery");
-                handleApiResponse(null);
+                activity.finishProcessing(null);
                 return 0;
             }
             StringRequest toRequest = new StringRequest(
@@ -82,6 +86,7 @@ class Tasks {
                     return headers;
                 }
             };
+            Log.e(TAG, toRequest.toString());
             requestQueue.add(toRequest);
             return 0;
         }
