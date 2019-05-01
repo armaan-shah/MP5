@@ -19,8 +19,6 @@ import android.widget.Spinner;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -146,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
     public static Map<String, Integer> getIds() { return ids; }
     public void finishProcessing(final String json) {
         try {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
             JsonParser jsonParser = new JsonParser();
             JsonArray jsonResults = jsonParser.parse(json).getAsJsonObject().getAsJsonArray("results");
             individualResults = new ArrayList<>();
@@ -157,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 toShow.put(individualResults.get(i).get("title").getAsString(), individualResults.get(i).get("readyInMinutes").getAsInt());
             }
             for (int i = 0; i < individualResults.size(); i++) {
-                toShow.put(individualResults.get(i).get("title").getAsString(), individualResults.get(i).get("readyInMinutes").getAsInt());
+                ids.put(individualResults.get(i).get("title").getAsString(), individualResults.get(i).get("id").getAsInt());
             }
             if (toShow.size() == 0) {
                 throw new Exception();

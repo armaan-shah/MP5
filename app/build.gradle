@@ -36,15 +36,5 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'com.google.code.gson:gson:2.8.5'
-    // Required -- JUnit 4 framework
-    testImplementation 'junit:junit:4.12'
-    // Optional -- Robolectric environment
-    testImplementation 'androidx.test:core:1.1.0'
-    // Optional -- Mockito framework
-    testImplementation 'org.mockito:mockito-core:1.10.19'
-
-    // required if you want to use Mockito for unit tests
-    testImplementation 'org.mockito:mockito-core:2.7.22'
-    // required if you want to use Mockito for Android tests
-    androidTestImplementation 'org.mockito:mockito-android:2.7.22'
+    implementation group: 'com.google.collections', name: 'google-collections', version: '1.0-rc2'
 }

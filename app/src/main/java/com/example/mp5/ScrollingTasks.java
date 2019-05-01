@@ -1,12 +1,6 @@
 package com.example.mp5;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
 
@@ -22,10 +16,10 @@ import java.util.Map;
 
 class ScrollingTasks {
 
-    private static final String TAG = "MP5:Tasks";
+    private static final String TAG = "MP5:ScrollingTasks";
     static class ProcessTextTask extends AsyncTask<View, Void, Integer> {
         private static final String SUBSCRIPTION_KEY = BuildConfig.API_KEY;
-        private static final String API_URL = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?";
+        private static final String API_URL = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/";
         private WeakReference<ScrollingActivity> activityReference;
         private RequestQueue requestQueue;
 
@@ -35,10 +29,11 @@ class ScrollingTasks {
         }
 
         protected Integer doInBackground(View... currentView) {
+            Log.e(TAG, "Called scrolling tasks.");
             ScrollingActivity activity = activityReference.get();
-            Uri.Builder toRequestURL = Uri.parse(API_URL).buildUpon();
+            String toRequestURL = API_URL + activity.getId() + "/information";
             StringRequest toRequest = new StringRequest(
-                    Request.Method.GET, toRequestURL.toString(),
+                    Request.Method.GET, toRequestURL,
                     this::handleApiResponse, this::handleApiError) {
                 @Override
                 public Map<String, String> getHeaders() {
@@ -48,7 +43,6 @@ class ScrollingTasks {
                     return headers;
                 }
             };
-            Log.e(TAG, toRequest.toString());
             requestQueue.add(toRequest);
             return 0;
         }
@@ -58,11 +52,11 @@ class ScrollingTasks {
             if (activity == null || activity.isFinishing()) {
                 return;
             }
-            //activity.finishProcessing(response);
+            activity.finishProcessing(response);
         }
         void handleApiError(final VolleyError error) {
             Log.w(TAG, "Error: " + error.toString());
-            //activityReference.get().finishProcessing(null);
+            activityReference.get().finishProcessing(null);
         }
     }
 }
